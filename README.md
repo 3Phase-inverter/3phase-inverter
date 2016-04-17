@@ -7,6 +7,9 @@ This repo have had Avr Studio V6 3 phase inverter nad Proteus simulation of it.
   
   
   [StackoverFlow link](  http://electronics.stackexchange.com/questions/228319/problem-in-3-phase-inverterpower-part-with-v-f-controlling)
-Thanks a lot 
-## Elasa.ir
+  
+  
+### Thanks a lot 
+
+# Elasa.ir
 
