@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// Copyright:      	www.KnowledgePlus.ir
+// Copyright:      	www.Elasa.ir
 // Author:         	OZHAN KD
 // Remarks:        	code ported to GNUC by Sh. Nourbakhsh Rad
 // known Problems: 	none
