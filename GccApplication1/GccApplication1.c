@@ -91,8 +91,8 @@ void LCD_0(void);
 void main(void)
 {
 	
-	DDRE = (1<<PE4);     // put PortB bit 5 as output
-
+	DDRE = (1<<PE4);     // put PortB bit 5 as input
+	PORTE = 1<<PE4;		// Enable PE4 pull-up resistor
     EIMSK = (1<<INT4)| (1<<INT5)| (1<<INT6); // Enable INT0 External Interrupt
 
 	flags.dir_f=0;
@@ -301,7 +301,7 @@ void test01(void)
   Lcd4_Write_String(str2) ;
   _delay_ms(10);
   	
-		if((TCounter>=TCRtemp) &&  mode!=FAULT_MODE)//&& !bit_is_set(PORTD, 1))									//100mS //loop until fault is coming from portd.1 
+		if((TCounter>=TCRtemp) &&  mode!=FAULT_MODE && mode!=STOP_MODE)//&& !bit_is_set(PORTD, 1))									//100mS //loop until fault is coming from portd.1 
 		{
 			TCRtemp = TCounter +100;						//1mS x100
 			
@@ -357,7 +357,18 @@ void test01(void)
 		else if( mode==FAULT_MODE)
 		{
 		 Lcd4_Set_Cursor(1,1);
-		Lcd4_Write_String("Fault accured !!") ;	
+		Lcd4_Write_String("Fault accrued !!") ;	
+		FRQtemp = SetFrequency(0);
+			ACCtemp = SetAcceleration(1);
+			DECtemp = SetDeceleration(1);
+		}
+		else if( mode==STOP_MODE)
+		{
+		 Lcd4_Set_Cursor(1,1);
+		Lcd4_Write_String("STOP_MODE accrued !!") ;	
+		FRQtemp = SetFrequency(0);
+			ACCtemp = SetAcceleration(1);
+			DECtemp = SetDeceleration(1);
 		}
 		
 		GLED(LVflag);
@@ -413,8 +424,11 @@ Lcd4_Write_String("Elasa.ir Test");
 
 Lcd4_Init();
 Lcd4_Set_Cursor(1,1);
-Lcd4_Write_String("INTERRUPT");  
+Lcd4_Write_String("RUN_MODE");  
 _delay_ms(200);
+
+mode=RUN_MODE;
+/*
 PORTB |= (1<<PB0);     // Put PortB bit 5 HIGH
 
 _delay_ms(10);
@@ -422,5 +436,49 @@ _delay_ms(10);
 PORTB &= ~(1<<PB0);     // Put PortB bit 5 LOW
 
 _delay_ms(10);
+*/
+
+}
+
+SIGNAL(SIG_INTERRUPT5) {
+	//ISR(INT4_vect){
+
+// this function is called when INT0 bit (PD2) is interrupted.
+
+// You can also use INTERRUPT() function instead.
+
+// SIG_INTERRUPT0 -> INT0 (PD2)
+
+// SIG_INTERRUPT1 -> INT1 (PD3)
+
+// While Button is pressed, LED is on
+
+Lcd4_Init();
+Lcd4_Set_Cursor(1,1);
+Lcd4_Write_String("Stop on");  
+_delay_ms(200);
+mode=STOP_MODE;
+//RUN_LED_OFF;
+
+}
+
+SIGNAL(SIG_INTERRUPT6) {
+	//ISR(INT4_vect){
+
+// this function is called when INT0 bit (PD2) is interrupted.
+
+// You can also use INTERRUPT() function instead.
+
+// SIG_INTERRUPT0 -> INT0 (PD2)
+
+// SIG_INTERRUPT1 -> INT1 (PD3)
+
+// While Button is pressed, LED is on
+
+Lcd4_Init();
+Lcd4_Set_Cursor(1,1);
+Lcd4_Write_String("DIR_CODE");  
+_delay_ms(200);
+key_code==DIR_CODE;
 
 }
