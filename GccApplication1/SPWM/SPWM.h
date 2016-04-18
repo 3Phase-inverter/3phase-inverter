@@ -16,7 +16,7 @@
 	//----------- Definitions
 	#define freq_Base 											50U  // 50Hz
 	#define freq_Boost 											10U  // 10Hz
-	#define A_Boost 												25UL //
+	#define A_Boost 												0UL//25UL //
 	
 	#define f_Base 													(freq_Base  *10U -5U)
 	#define f_Boost 												(freq_Boost *10U -5U)

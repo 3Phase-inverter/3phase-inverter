@@ -250,7 +250,17 @@ void test01(void)
     old_key_code=key_code;
     mode=RUN_MODE;
     RUN_LED_ON;
-    ENABLE_MOTOR;       
+    ENABLE_MOTOR; 
+	 if(flags.dir_f)
+    {     
+     DIR_LED1_ON;
+     DIR_LED2_OFF;     
+    }
+    else
+    {     
+     DIR_LED1_OFF;
+     DIR_LED2_ON;
+    }      
    }
    else if((key_code==DIR_CODE)&&(key_code!=old_key_code))
    {
