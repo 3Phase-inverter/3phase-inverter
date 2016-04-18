@@ -1,14 +1,15 @@
+/*
 #define FREQ_BASE       50U     // 50Hz
 #define SPEED_BASE      (FREQ_BASE * 10U -5U)
 #define SPEED_BOOST     1U
 #define A_BOOST_MIN     25U     // 9.8 percent      
-
+*/
 #define KEY_PORT        PORTE
 #define KEY_DDR         DDRE
 #define KEY_PIN         PINE
-#define RUN_KEY_bp      2       // bit position
-#define STOP_KEY_bp     3
-#define DIR_KEY_bp      4
+#define RUN_KEY_bp      4       // bit position
+#define STOP_KEY_bp     5
+#define DIR_KEY_bp      6
 
 #define RUN_gc          (1<<DIR_KEY_bp)|(1<<STOP_KEY_bp)
 #define STOP_gc         (1<<DIR_KEY_bp)|(1<<RUN_KEY_bp)

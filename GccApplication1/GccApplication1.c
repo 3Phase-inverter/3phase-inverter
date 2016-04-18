@@ -27,6 +27,7 @@
 
 //--------------------------------------------------
 #include "ADC\ADC.h"
+
 //flags={0,0,0};
 //--------------------------------------------------
 
@@ -59,7 +60,7 @@ enum
 };
 
 volatile unsigned char temp_key_code=NO_KEY_CODE,
-mode=STOP_MODE,a_boost=A_BOOST_MIN;
+mode=STOP_MODE;//a_boost=A_BOOST_MIN;
 /*
 struct 
 {
@@ -89,8 +90,13 @@ void LCD_0(void);
 //*****************************************************************************
 void main(void)
 {
-	//sflags.dir_f=1;
-	ENABLE_DDR|=1<<ENABLE_bp;
+	
+	DDRE = (1<<PE4);     // put PortB bit 5 as output
+
+    EIMSK = (1<<INT4)| (1<<INT5)| (1<<INT6); // Enable INT0 External Interrupt
+
+	flags.dir_f=0;
+	ENABLE_DDR|=1<<ENABLE_bp; // Turn on as output port
     DISABLE_MOTOR;
  FAULT_PORT|=1<<FAULT_bp; // Turn on fault input pullup
  RUN_LED_DDR|=1<<RUN_LED_bp;
@@ -101,90 +107,28 @@ void main(void)
  DIR_LED2_OFF;
  KEY_PORT|=(1<<RUN_KEY_bp)|(1<<STOP_KEY_bp)|(1<<DIR_KEY_bp); // Turn on pullups 
  
- flags.deceleration_f=flags.dir_change_f=flags.dir_f=0;
+ flags.deceleration_f=flags.dir_change_f=0;flags.dir_f=1;
+ 
+ cli(); 
+ sei();
 	LCD_0();
 	Initial();
 	
 	while (1)
  {
-  key_code=temp_key_code;
-  switch(mode)
-  {
   
-//----------------------------------------------------------------
+  /*
+  char str[16];
+
   
-  case STOP_MODE:
-   if((FAULT_PIN&(1<<FAULT_bp))==0)
-   {
-    old_key_code=key_code;
-    mode=FAULT_MODE; // IR2130 fault condition
-    break;
-   }
-   if((key_code==RUN_CODE)&&(key_code!=old_key_code))
-   {
-    old_key_code=key_code;
-    mode=RUN_MODE;
-    RUN_LED_ON;
-    ENABLE_MOTOR;       
-   }
-   else if((key_code==DIR_CODE)&&(key_code!=old_key_code))
-   {
-    old_key_code=key_code;
-    if(flags.dir_f)
-    {     
-     DIR_LED1_ON;
-     DIR_LED2_OFF;     
-    }
-    else
-    {     
-     DIR_LED1_OFF;
-     DIR_LED2_ON;
-    }
-    flags.dir_f^=1;
-   }
-   else old_key_code=key_code;   
-   break;
+  itoa(mode, str, 10);
+			//itoa();
+  Lcd4_Init();
+  Lcd4_Set_Cursor(1,1);
+  Lcd4_Write_String(str) ;
+  _delay_ms(100);
+  */
   
-//----------------------------------------------------------------
-  
-  case RUN_MODE: 
-   if((FAULT_PIN&(1<<FAULT_bp))==0)
-   {
-    DISABLE_MOTOR;
-    flags.deceleration_f=0;
-    flags.dir_change_f=0;
-    old_key_code=key_code;
-    mode=FAULT_MODE; // Fault condition
-    break;
-   }
-   if((key_code==STOP_CODE)&&(key_code!=old_key_code))
-   {
-    old_key_code=key_code;    
-    flags.deceleration_f=1;    
-   }
-   else if((key_code==DIR_CODE)&&(key_code!=old_key_code))
-   {
-    old_key_code=key_code;
-    cli()   ; 
-    flags.deceleration_f=1;
-    flags.dir_change_f=1;
-    sei() ;  
-   }
-   else old_key_code=key_code;
-   break;  
-   
-//----------------------------------------------------------------
-  
-  case FAULT_MODE:  
-   if((FAULT_PIN&(1<<FAULT_bp))&&(key_code==STOP_CODE)&&(key_code!=old_key_code))    
-   {
-     old_key_code=key_code;
-     mode=STOP_MODE;
-     RUN_LED_OFF;
-   }   
-   else old_key_code=key_code;
-   break;   
-  }
   test01();
  }	//while(1);
 } //main
@@ -267,8 +211,97 @@ void test01(void)
 	
 	//----- main loop!
 	while(1)  
-	{		
-		if((TCounter>=TCRtemp))  // && !bit_is_set(PORTD, 1))									//100mS //loop until fault is coming from portd.1 
+	{	
+  key_code=temp_key_code;
+  switch(mode)
+  {
+  
+//----------------------------------------------------------------
+  
+  case STOP_MODE:   // 0
+   if((FAULT_PIN&(1<<FAULT_bp))==0)
+   {
+    old_key_code=key_code;
+    mode=FAULT_MODE; // IR2130 fault condition
+    break;
+   }
+   if((key_code==RUN_CODE)&&(key_code!=old_key_code))
+   {
+    old_key_code=key_code;
+    mode=RUN_MODE;
+    RUN_LED_ON;
+    ENABLE_MOTOR;       
+   }
+   else if((key_code==DIR_CODE)&&(key_code!=old_key_code))
+   {
+    old_key_code=key_code;
+    if(flags.dir_f)
+    {     
+     DIR_LED1_ON;
+     DIR_LED2_OFF;     
+    }
+    else
+    {     
+     DIR_LED1_OFF;
+     DIR_LED2_ON;
+    }
+    flags.dir_f^=1;
+   }
+   else old_key_code=key_code;   
+   break;
+  
+//----------------------------------------------------------------
+  
+  case RUN_MODE:    //1
+   if((FAULT_PIN&(1<<FAULT_bp))==0)
+   {
+    DISABLE_MOTOR;
+    flags.deceleration_f=0;
+    flags.dir_change_f=0;
+    old_key_code=key_code;
+    mode=FAULT_MODE; // Fault condition
+    break;
+   }
+   if((key_code==STOP_CODE)&&(key_code!=old_key_code))
+   {
+    old_key_code=key_code;    
+    flags.deceleration_f=1;    
+   }
+   else if((key_code==DIR_CODE)&&(key_code!=old_key_code))
+   {
+    old_key_code=key_code;
+    cli()   ; 
+    flags.deceleration_f=1;
+    flags.dir_change_f=1;
+    sei() ;  
+   }
+   else old_key_code=key_code;
+   break;  
+   
+//----------------------------------------------------------------
+  
+  case FAULT_MODE:  //   2
+  
+  
+   if((FAULT_PIN&(1<<FAULT_bp))&&(key_code==STOP_CODE)&&(key_code!=old_key_code))    
+   {
+     old_key_code=key_code;
+     mode=STOP_MODE;
+     RUN_LED_OFF;
+   }   
+   else old_key_code=key_code;
+   break;   
+  }
+  char str2[16];
+   itoa(mode, str2, 10);
+			//itoa();
+  Lcd4_Init();
+  Lcd4_Set_Cursor(1,1);
+  sprintf(str2, "mode:%03d ", mode);
+  Lcd4_Write_String(str2) ;
+  _delay_ms(10);
+  	
+		if((TCounter>=TCRtemp) &&  mode!=FAULT_MODE)//&& !bit_is_set(PORTD, 1))									//100mS //loop until fault is coming from portd.1 
 		{
 			TCRtemp = TCounter +100;						//1mS x100
 			
@@ -321,6 +354,11 @@ void test01(void)
 			if(i==5)					{						LVflag = 1;		}
 			else if(i==10)		{	i = 0;		LVflag = 0;	}
 		}
+		else if( mode==FAULT_MODE)
+		{
+		 Lcd4_Set_Cursor(1,1);
+		Lcd4_Write_String("Fault accured !!") ;	
+		}
 		
 		GLED(LVflag);
 		//_delay_ms(200);
@@ -350,7 +388,7 @@ dim LCD_D7_Direction as sbit at DDc7_bit
 
 */
 
-DDRD = 0xFF;
+//DDRD = 0xFF;
 DDRC = 0xFF;
 int i;
 Lcd4_Init();
@@ -358,3 +396,31 @@ Lcd4_Set_Cursor(1,1);
 Lcd4_Write_String("Elasa.ir Test");  
 	
 }	
+
+
+//SIGNAL(SIG_INTERRUPT4) {
+	ISR(INT4_vect){
+
+// this function is called when INT0 bit (PD2) is interrupted.
+
+// You can also use INTERRUPT() function instead.
+
+// SIG_INTERRUPT0 -> INT0 (PD2)
+
+// SIG_INTERRUPT1 -> INT1 (PD3)
+
+// While Button is pressed, LED is on
+
+Lcd4_Init();
+Lcd4_Set_Cursor(1,1);
+Lcd4_Write_String("INTERRUPT");  
+_delay_ms(200);
+PORTB |= (1<<PB0);     // Put PortB bit 5 HIGH
+
+_delay_ms(10);
+
+PORTB &= ~(1<<PB0);     // Put PortB bit 5 LOW
+
+_delay_ms(10);
+
+}

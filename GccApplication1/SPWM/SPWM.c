@@ -238,8 +238,15 @@ void SPWM_init(void)
 {
 	SPWM_HW_init();
 	
+	if (flags.dir_f){
 	PWMR_SET(R_Index(index));
  	PWMS_SET(S_Index(index));
+	}
+	else
+	{
+	PWMS_SET(R_Index(index));
+ 	PWMR_SET(S_Index(index));	
+	}			 
  	PWMT_SET(T_Index(index));
 
 	PWM_TMR_init();
