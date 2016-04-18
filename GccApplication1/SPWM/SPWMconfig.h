@@ -84,7 +84,7 @@
 	//Speed tune interval will occur every 1mS , INTVtime = (1000 *F_CPU /prescaler) -1
 	#define SPEED_INTV_init()								TCCR2 = 0b00001011
 
- 	#define SPEED_INTV_time									124//229			//About 1mS
+ 	#define SPEED_INTV_time									100//124//229			//About 1mS  10 //About 0.1mS 
  	
  	#define SPEED_INTV_ena()								sbi(TIFR,  OCF2);		\
  																					sbi(TIMSK, OCIE2)
