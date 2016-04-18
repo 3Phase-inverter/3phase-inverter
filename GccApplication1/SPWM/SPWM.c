@@ -133,8 +133,16 @@ ISR_PWM_SET()
 	{
 		A = ((N *(unsigned long)(speed -f_Boost)) /M) +A_Boost;
 		
+		if (flags.dir_f){
+			
 		PWMR_SET(A_calc(pgm_read_byte(&sine[R_Index(index)]), (unsigned char)A));
 		PWMS_SET(A_calc(pgm_read_byte(&sine[S_Index(index)]), (unsigned char)A));
+		}
+		else
+		{
+		PWMS_SET(A_calc(pgm_read_byte(&sine[R_Index(index)]), (unsigned char)A));
+		PWMR_SET(A_calc(pgm_read_byte(&sine[S_Index(index)]), (unsigned char)A));			
+		}			
 		PWMT_SET(A_calc(pgm_read_byte(&sine[T_Index(index)]), (unsigned char)A));
 	}
 }	//ISR_PWM_SET
