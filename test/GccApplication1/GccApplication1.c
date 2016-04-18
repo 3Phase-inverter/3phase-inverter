@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------------
-// Copyright:      www.elasa.ir
+// Copyright:      www.KnowledgePlus.ir
 // Author:         OZHAN KD ported by Sh. Nourbakhsh Rad
 // Remarks:        
 // known Problems: none
@@ -11,15 +11,8 @@
 //#endif
 //	Include Headers
 //*****************************************************************************
- 
-
-
-
 #include "app_config.h"
-#include "defines.h"
-
 #include "HW_SPWM.h"
-#include "SPWM\SPWM.h" 
 
 //--------------------------------------------------
 #include "N11\N1100.h"
@@ -27,12 +20,9 @@
 
 //--------------------------------------------------
 #include "ADC\ADC.h"
-//flags={0,0,0};
+
 //--------------------------------------------------
-
-
-
-//----------------------------------------------------------------
+#include "SPWM\SPWM.h"
 
 #define D4 eS_PORTC4
 #define D5 eS_PORTC5
@@ -43,38 +33,10 @@
 #include "lcd.h" //Can be download from the bottom of this article
 //	Constants and Varables
 //*****************************************************************************
-//-------------------------------------------------- From inverter 4
-enum
-{
- STOP_MODE=0,
- RUN_MODE,
- FAULT_MODE
-};
-enum
-{
- RUN_CODE=0,
- STOP_CODE,
- DIR_CODE,
- NO_KEY_CODE
-};
-
-volatile unsigned char temp_key_code=NO_KEY_CODE,
-mode=STOP_MODE,a_boost=A_BOOST_MIN;
-/*
-struct 
-{
- volatile unsigned char 
- dir_f:1,
- deceleration_f:1,
- dir_change_f:1;
-}flags={0,0,0};
-
- */
 
 //Temp Const.
 char 														Ctemp[24];
 int  														Itemp = 0;
-int  														key_code,old_key_code ;
 
 
 //	Functions Prototype
@@ -89,104 +51,11 @@ void LCD_0(void);
 //*****************************************************************************
 void main(void)
 {
-	//sflags.dir_f=1;
-	ENABLE_DDR|=1<<ENABLE_bp;
-    DISABLE_MOTOR;
- FAULT_PORT|=1<<FAULT_bp; // Turn on fault input pullup
- RUN_LED_DDR|=1<<RUN_LED_bp;
- RUN_LED_OFF;
- DIR_LED1_DDR|=1<<DIR_LED1_bp;
- DIR_LED2_DDR|=1<<DIR_LED2_bp;
- DIR_LED1_ON;
- DIR_LED2_OFF;
- KEY_PORT|=(1<<RUN_KEY_bp)|(1<<STOP_KEY_bp)|(1<<DIR_KEY_bp); // Turn on pullups 
- 
- flags.deceleration_f=flags.dir_change_f=flags.dir_f=0;
 	LCD_0();
 	Initial();
+	test01();
 	
-	while (1)
- {
-  key_code=temp_key_code;
-  switch(mode)
-  {
-  
-//----------------------------------------------------------------
-  
-  case STOP_MODE:
-   if((FAULT_PIN&(1<<FAULT_bp))==0)
-   {
-    old_key_code=key_code;
-    mode=FAULT_MODE; // IR2130 fault condition
-    break;
-   }
-   if((key_code==RUN_CODE)&&(key_code!=old_key_code))
-   {
-    old_key_code=key_code;
-    mode=RUN_MODE;
-    RUN_LED_ON;
-    ENABLE_MOTOR;       
-   }
-   else if((key_code==DIR_CODE)&&(key_code!=old_key_code))
-   {
-    old_key_code=key_code;
-    if(flags.dir_f)
-    {     
-     DIR_LED1_ON;
-     DIR_LED2_OFF;     
-    }
-    else
-    {     
-     DIR_LED1_OFF;
-     DIR_LED2_ON;
-    }
-    flags.dir_f^=1;
-   }
-   else old_key_code=key_code;   
-   break;
-  
-//----------------------------------------------------------------
-  
-  case RUN_MODE: 
-   if((FAULT_PIN&(1<<FAULT_bp))==0)
-   {
-    DISABLE_MOTOR;
-    flags.deceleration_f=0;
-    flags.dir_change_f=0;
-    old_key_code=key_code;
-    mode=FAULT_MODE; // Fault condition
-    break;
-   }
-   if((key_code==STOP_CODE)&&(key_code!=old_key_code))
-   {
-    old_key_code=key_code;    
-    flags.deceleration_f=1;    
-   }
-   else if((key_code==DIR_CODE)&&(key_code!=old_key_code))
-   {
-    old_key_code=key_code;
-    cli()   ; 
-    flags.deceleration_f=1;
-    flags.dir_change_f=1;
-    sei() ;  
-   }
-   else old_key_code=key_code;
-   break;  
-   
-//----------------------------------------------------------------
-  
-  case FAULT_MODE:  
-   if((FAULT_PIN&(1<<FAULT_bp))&&(key_code==STOP_CODE)&&(key_code!=old_key_code))    
-   {
-     old_key_code=key_code;
-     mode=STOP_MODE;
-     RUN_LED_OFF;
-   }   
-   else old_key_code=key_code;
-   break;   
-  }
-  test01();
- }	//while(1);
+	while(1);
 } //main
 
 
@@ -266,9 +135,9 @@ void test01(void)
 	ADC_CH_init(DEC_ACH);
 	
 	//----- main loop!
-	while(1)  
+	while(1)
 	{		
-		if((TCounter>=TCRtemp))  // && !bit_is_set(PORTD, 1))									//100mS //loop until fault is coming from portd.1 
+		if(TCounter>=TCRtemp)									//100mS
 		{
 			TCRtemp = TCounter +100;						//1mS x100
 			
