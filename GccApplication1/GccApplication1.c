@@ -211,7 +211,24 @@ void test01(void)
 	
 	//----- main loop!
 	while(1)  
-	{	
+	{
+		unsigned char temp8;	
+  temp8=KEY_PIN&((1<<DIR_KEY_bp)|(1<<STOP_KEY_bp)|(1<<RUN_KEY_bp));
+  switch(temp8)
+  {
+  case RUN_gc:
+   temp_key_code=RUN_CODE;
+   break; 
+  case STOP_gc:
+   temp_key_code=STOP_CODE;
+   break;
+  case DIR_gc:
+   temp_key_code=DIR_CODE;
+   break;
+  default:
+   temp_key_code=NO_KEY_CODE;  
+  }
+  
   key_code=temp_key_code;
   switch(mode)
   {
@@ -223,6 +240,9 @@ void test01(void)
    {
     old_key_code=key_code;
     mode=FAULT_MODE; // IR2130 fault condition
+	RUN_LED_OFF;
+	DISABLE_MOTOR;
+	
     break;
    }
    if((key_code==RUN_CODE)&&(key_code!=old_key_code))
@@ -255,7 +275,9 @@ void test01(void)
   case RUN_MODE:    //1
    if((FAULT_PIN&(1<<FAULT_bp))==0)
    {
+	   
     DISABLE_MOTOR;
+	RUN_LED_OFF;
     flags.deceleration_f=0;
     flags.dir_change_f=0;
     old_key_code=key_code;
@@ -287,7 +309,7 @@ void test01(void)
    {
      old_key_code=key_code;
      mode=STOP_MODE;
-     RUN_LED_OFF;
+     RUN_LED_OFF;DISABLE_MOTOR;
    }   
    else old_key_code=key_code;
    break;   
@@ -361,6 +383,7 @@ void test01(void)
 		FRQtemp = SetFrequency(0);
 			ACCtemp = SetAcceleration(1);
 			DECtemp = SetDeceleration(1);
+			RUN_LED_OFF;DISABLE_MOTOR;
 		}
 		else if( mode==STOP_MODE)
 		{
@@ -369,6 +392,7 @@ void test01(void)
 		FRQtemp = SetFrequency(0);
 			ACCtemp = SetAcceleration(1);
 			DECtemp = SetDeceleration(1);
+			RUN_LED_OFF;DISABLE_MOTOR;
 		}
 		
 		GLED(LVflag);
@@ -458,6 +482,8 @@ Lcd4_Set_Cursor(1,1);
 Lcd4_Write_String("Stop on");  
 _delay_ms(200);
 mode=STOP_MODE;
+RUN_LED_OFF;
+DISABLE_MOTOR;
 //RUN_LED_OFF;
 
 }
@@ -474,11 +500,31 @@ SIGNAL(SIG_INTERRUPT6) {
 // SIG_INTERRUPT1 -> INT1 (PD3)
 
 // While Button is pressed, LED is on
-
+key_code=DIR_CODE;
 Lcd4_Init();
 Lcd4_Set_Cursor(1,1);
 Lcd4_Write_String("DIR_CODE");  
 _delay_ms(200);
-key_code==DIR_CODE;
-
+ /*
+ DIR_LED1_OFF;
+      DIR_LED2_ON;
+_delay_ms(200);
+DIR_LED1_ON;
+      DIR_LED2_OFF;
+*/	  
+flags.dir_change_f=1;
+if(flags.dir_f)
+    {     
+		Lcd4_Set_Cursor(1,1);
+Lcd4_Write_String("DIR_1    ");_delay_ms(200);
+     DIR_LED1_ON;
+     DIR_LED2_OFF;     
+    }
+    else
+    {     
+		Lcd4_Set_Cursor(1,1);
+Lcd4_Write_String("DIR_0    ");_delay_ms(200);
+     DIR_LED1_OFF;
+     DIR_LED2_ON;
+    }
 }
