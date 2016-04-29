@@ -29,9 +29,15 @@
 #include "ADC\ADC.h"
 
 //flags={0,0,0};
-//--------------------------------------------------
+//--------------------EEprom includes------------------------------
 
-
+#include "Eeprom\eeprom_init.h"
+#include "UART\UART_routines.h"		
+#include "Eeprom\i2c_routines.h"
+#include "Eeprom\EEPROM_routines.h"
+#include "RTC\RTC_routines.h"
+ volatile unsigned char errorStatus, data_1, option, totalChar;
+  volatile unsigned int pageNumber;
 
 //----------------------------------------------------------------
 
@@ -83,8 +89,31 @@ int  														key_code,old_key_code ;
 void Initial(void);
 void Splash(void);
 
+
+
 void test01(void);
 void LCD_0(void);
+
+//---------------------------------------------------------//
+//---------------------------------------------------------//
+
+void Eeprom_Initial(unsigned char data_1)
+{
+	//#include "Eeprom\EEPROM_routines.c"
+	Lcd4_Init();
+	Lcd4_Set_Cursor(1,1);
+	Lcd4_Write_String("Eeprom_Initial") ;
+//	transmitString_F(PSTR(" Enter text: "));
+	errorStatus = EEPROM_write(0x00,0x00,data_1);
+	sprintf(Ctemp, "EEPROM_write:%03d.%01d", (data_1/10), (data_1%10));
+    Lcd4_Set_Cursor(2,1);
+	Lcd4_Write_String(Ctemp) ;
+	
+	errorStatus = EEPROM_read(0x00,0x00,2);
+	sprintf(Ctemp, "EEPROM_read:%03d.%01d ", (data_1/10), (data_1%10));
+    Lcd4_Set_Cursor(2,1);
+	Lcd4_Write_String(Ctemp) ;
+}
 
 //	<<< main function >>>
 //*****************************************************************************
@@ -113,7 +142,8 @@ void main(void)
  sei();
 	LCD_0();
 	Initial();
-	
+	//init_devices();
+	Eeprom_Initial(0x11);
 	while (1)
  {
   
@@ -165,7 +195,9 @@ void Initial(void)
 	BUZZER(OK_sign);
 
 	//------------
-	sei();												//Interrupts enabel	
+	sei();												//Interrupts enabel
+	
+	
 }	//Initial
 
 void Splash(void)
@@ -409,6 +441,7 @@ void test01(void)
 		//_delay_ms(200);
 	}//while
 } //test01
+
 
 
 //---------------------------------------------------------//

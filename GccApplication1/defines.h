@@ -23,7 +23,7 @@
 #define FAULT_PORT      PORTD
 #define FAULT_DDR       DDRD
 #define FAULT_PIN       PIND
-#define FAULT_bp        1
+#define FAULT_bp        5
 
 #define RUN_LED_PORT    PORTD
 #define RUN_LED_DDR     DDRD

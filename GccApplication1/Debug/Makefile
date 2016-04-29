@@ -33,6 +33,9 @@ OUTPUT_FILE_DEP:=
 SUBDIRS :=  \
 ../N11 \
 ../ADC \
+../Eeprom \
+../UART \
+../RTC \
 ../SPWM \
 ../sFONT
 
@@ -40,10 +43,14 @@ SUBDIRS :=  \
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../ADC/ADC.c \
+../Eeprom/eeprom_init.c \
+../Eeprom/EEPROM_routines.c \
+../Eeprom/i2c_routines.c \
 ../GccApplication1.c \
 ../N11/N1100.c \
 ../sFONT/sFONT.c \
-../SPWM/SPWM.c
+../SPWM/SPWM.c \
+../UART/UART_routines.c
 
 
 PREPROCESSING_SRCS += 
@@ -54,34 +61,50 @@ ASM_SRCS +=
 
 OBJS +=  \
 ADC/ADC.o \
+Eeprom/eeprom_init.o \
+Eeprom/EEPROM_routines.o \
+Eeprom/i2c_routines.o \
 GccApplication1.o \
 N11/N1100.o \
 sFONT/sFONT.o \
-SPWM/SPWM.o
+SPWM/SPWM.o \
+UART/UART_routines.o
 
 
 OBJS_AS_ARGS +=  \
 ADC/ADC.o \
+Eeprom/eeprom_init.o \
+Eeprom/EEPROM_routines.o \
+Eeprom/i2c_routines.o \
 GccApplication1.o \
 N11/N1100.o \
 sFONT/sFONT.o \
-SPWM/SPWM.o
+SPWM/SPWM.o \
+UART/UART_routines.o
 
 
 C_DEPS +=  \
 ADC/ADC.d \
+Eeprom/eeprom_init.d \
+Eeprom/EEPROM_routines.d \
+Eeprom/i2c_routines.d \
 GccApplication1.d \
 N11/N1100.d \
 sFONT/sFONT.d \
-SPWM/SPWM.d
+SPWM/SPWM.d \
+UART/UART_routines.d
 
 
 C_DEPS_AS_ARGS +=  \
 ADC/ADC.d \
+Eeprom/eeprom_init.d \
+Eeprom/EEPROM_routines.d \
+Eeprom/i2c_routines.d \
 GccApplication1.d \
 N11/N1100.d \
 sFONT/sFONT.d \
-SPWM/SPWM.d
+SPWM/SPWM.d \
+UART/UART_routines.d
 
 
 OUTPUT_FILE_PATH +=GccApplication1.elf
@@ -104,7 +127,21 @@ OUTPUT_FILE_DEP:= ./makedep.mk
 
 
 
+
+
+
+
+
+
+
+
 ADC/%.o: ../ADC/%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler
+	$(QUOTE)D:\Program Files (x86)\Atmel\Atmel Studio 6.0\extensions\Atmel\AVRGCC\3.3.2.31\AVRToolchain\bin\avr-gcc.exe$(QUOTE)  -funsigned-char -funsigned-bitfields -O1 -fpack-struct -fshort-enums -g2 -Wall -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)"  -mmcu=atmega128  -o"$@" "$<" 
+	@echo Finished building: $<
+
+Eeprom/%.o: ../Eeprom/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler
 	$(QUOTE)D:\Program Files (x86)\Atmel\Atmel Studio 6.0\extensions\Atmel\AVRGCC\3.3.2.31\AVRToolchain\bin\avr-gcc.exe$(QUOTE)  -funsigned-char -funsigned-bitfields -O1 -fpack-struct -fshort-enums -g2 -Wall -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)"  -mmcu=atmega128  -o"$@" "$<" 
@@ -129,6 +166,12 @@ sFONT/%.o: ../sFONT/%.c
 	@echo Finished building: $<
 
 SPWM/%.o: ../SPWM/%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler
+	$(QUOTE)D:\Program Files (x86)\Atmel\Atmel Studio 6.0\extensions\Atmel\AVRGCC\3.3.2.31\AVRToolchain\bin\avr-gcc.exe$(QUOTE)  -funsigned-char -funsigned-bitfields -O1 -fpack-struct -fshort-enums -g2 -Wall -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)"  -mmcu=atmega128  -o"$@" "$<" 
+	@echo Finished building: $<
+
+UART/%.o: ../UART/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler
 	$(QUOTE)D:\Program Files (x86)\Atmel\Atmel Studio 6.0\extensions\Atmel\AVRGCC\3.3.2.31\AVRToolchain\bin\avr-gcc.exe$(QUOTE)  -funsigned-char -funsigned-bitfields -O1 -fpack-struct -fshort-enums -g2 -Wall -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)"  -mmcu=atmega128  -o"$@" "$<" 
@@ -159,7 +202,7 @@ all: $(OUTPUT_FILE_PATH) $(ADDITIONAL_DEPENDENCIES)
 $(OUTPUT_FILE_PATH): $(OBJS) $(USER_OBJS) $(OUTPUT_FILE_DEP)
 	@echo Building target: $@
 	@echo Invoking: AVR/GNU C Linker
-	$(QUOTE)D:\Program Files (x86)\Atmel\Atmel Studio 6.0\extensions\Atmel\AVRGCC\3.3.2.31\AVRToolchain\bin\avr-gcc.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="GccApplication1.map" -Wl,--start-group -Wl,-lm  -Wl,--end-group  -mmcu=atmega128  
+	$(QUOTE)D:\Program Files (x86)\Atmel\Atmel Studio 6.0\extensions\Atmel\AVRGCC\3.3.2.31\AVRToolchain\bin\avr-gcc.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="GccApplication1.map" -Wl,--start-group  -Wl,--end-group  -mmcu=atmega128  
 	@echo Finished building target: $@
 	"D:\Program Files (x86)\Atmel\Atmel Studio 6.0\extensions\Atmel\AVRGCC\3.3.2.31\AVRToolchain\bin\avr-objcopy.exe" -O ihex -R .eeprom -R .fuse -R .lock -R .signature  "GccApplication1.elf" "GccApplication1.hex"
 	"D:\Program Files (x86)\Atmel\Atmel Studio 6.0\extensions\Atmel\AVRGCC\3.3.2.31\AVRToolchain\bin\avr-objcopy.exe" -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "GccApplication1.elf" "GccApplication1.eep" || exit 0

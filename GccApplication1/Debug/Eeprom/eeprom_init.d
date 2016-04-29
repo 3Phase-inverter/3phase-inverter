@@ -1,5 +1,5 @@
-GccApplication1.d GccApplication1.o: .././GccApplication1.c \
- .././app_config.h \
+Eeprom/eeprom_init.d Eeprom/eeprom_init.o: ../Eeprom/eeprom_init.c \
+ ../Eeprom/..\app_config.h \
  d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/avr/io.h \
  d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/avr/sfr_defs.h \
  d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/inttypes.h \
@@ -24,14 +24,9 @@ GccApplication1.d GccApplication1.o: .././GccApplication1.c \
  d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/stdlib.h \
  d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/stdio.h \
  d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/include/stdarg.h \
- .././defines.h .././HW_SPWM.h .././SPWM\SPWM.h .././SPWM\/SPWMconfig.h \
- .././SPWM\/..\app_config.h .././N11\N1100.h .././N11\/N1100config.h \
- .././N11\/..\app_config.h .././sFONT\sFONT.h .././sFONT\/..\N11\N1100.h \
- .././ADC\ADC.h .././ADC\/..\app_config.h .././Eeprom\eeprom_init.h \
- .././UART\UART_routines.h .././Eeprom\i2c_routines.h \
- .././Eeprom\EEPROM_routines.h .././RTC\RTC_routines.h .././lcd.h
+ ../Eeprom/..\UART\UART_routines.h ../Eeprom/eeprom_init.h
 
-.././app_config.h:
+../Eeprom/..\app_config.h:
 
 d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/avr/io.h:
 
@@ -81,38 +76,6 @@ d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.
 
 d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/include/stdarg.h:
 
-.././defines.h:
+../Eeprom/..\UART\UART_routines.h:
 
-.././HW_SPWM.h:
-
-.././SPWM\SPWM.h:
-
-.././SPWM\/SPWMconfig.h:
-
-.././SPWM\/..\app_config.h:
-
-.././N11\N1100.h:
-
-.././N11\/N1100config.h:
-
-.././N11\/..\app_config.h:
-
-.././sFONT\sFONT.h:
-
-.././sFONT\/..\N11\N1100.h:
-
-.././ADC\ADC.h:
-
-.././ADC\/..\app_config.h:
-
-.././Eeprom\eeprom_init.h:
-
-.././UART\UART_routines.h:
-
-.././Eeprom\i2c_routines.h:
-
-.././Eeprom\EEPROM_routines.h:
-
-.././RTC\RTC_routines.h:
-
-.././lcd.h:
+../Eeprom/eeprom_init.h:

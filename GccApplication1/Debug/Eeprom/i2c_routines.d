@@ -1,5 +1,5 @@
-N11-2/N1100.d N11-2/N1100.o: ../N11-2/N1100.c ../N11-2/N1100.h \
- ../N11-2/N1100config.h ../N11-2/..\app_config.h \
+Eeprom/i2c_routines.d Eeprom/i2c_routines.o: ../Eeprom/i2c_routines.c \
+ ../Eeprom/..\app_config.h \
  d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/avr/io.h \
  d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/avr/sfr_defs.h \
  d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/inttypes.h \
@@ -23,13 +23,10 @@ N11-2/N1100.d N11-2/N1100.o: ../N11-2/N1100.c ../N11-2/N1100.h \
  d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/math.h \
  d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/stdlib.h \
  d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/stdio.h \
- d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/include/stdarg.h
+ d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/include/stdarg.h \
+ ../Eeprom/..\Eeprom\i2c_routines.h
 
-../N11-2/N1100.h:
-
-../N11-2/N1100config.h:
-
-../N11-2/..\app_config.h:
+../Eeprom/..\app_config.h:
 
 d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/avr/io.h:
 
@@ -78,3 +75,5 @@ d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.
 d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/../../../../avr/include/stdio.h:
 
 d:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.3.2.31\avrtoolchain\bin\../lib/gcc/avr/4.5.1/include/stdarg.h:
+
+../Eeprom/..\Eeprom\i2c_routines.h:

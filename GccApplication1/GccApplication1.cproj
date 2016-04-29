@@ -43,20 +43,15 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
       <AvrGcc>
-        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
-        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
-        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
-        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
-        <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
-        <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
-        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-        <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
-        <avrgcc.linker.libraries.Libraries>
-          <ListValues>
-            <Value>m</Value>
-          </ListValues>
-        </avrgcc.linker.libraries.Libraries>
-      </AvrGcc>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
+</AvrGcc>
     </ToolchainSettings>
     <UsesExternalMakeFile>False</UsesExternalMakeFile>
     <ExternalMakeFilePath>I:\PWM\SPWM33_5\Makefile</ExternalMakeFilePath>
@@ -72,6 +67,24 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="defines.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Eeprom\eeprom_init.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Eeprom\eeprom_init.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Eeprom\EEPROM_routines.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Eeprom\EEPROM_routines.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Eeprom\i2c_routines.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Eeprom\i2c_routines.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="GccApplication1.c">
@@ -119,10 +132,19 @@
     <Compile Include="SPWM\TIMER_tbl_14.7.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="UART\UART_routines.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="UART\UART_routines.h">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="N11" />
     <Folder Include="ADC" />
+    <Folder Include="Eeprom" />
+    <Folder Include="UART" />
+    <Folder Include="RTC" />
     <Folder Include="SPWM" />
     <Folder Include="sFONT" />
   </ItemGroup>
